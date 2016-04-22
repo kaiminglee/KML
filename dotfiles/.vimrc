@@ -1,3 +1,6 @@
+set shell=/bin/bash
+
+
 " An example for a vimrc file.
 "
 " Maintainer:	Bram Moolenaar <Bram@vim.org>
@@ -102,7 +105,7 @@ set autoread
 set display=lastline
 set encoding=utf-8
 "set formatoptions+=j
-set history=500	
+set history=1000
 " set langnoremap
 set laststatus=2
 "set list listchars=eol:$,tab:> ,trail:-,nbsp:+
@@ -119,5 +122,46 @@ set wildmenu
 set softtabstop=4
 set shiftwidth=4
 set backupdir=~/tmp,.,~/
-imap <C-L> <Esc>
+"imap <C-L> <Esc>
+
+" sensible defaults tpope
+syntax enable
+set complete-=i
+set nrformats-=octal
+set ttimeout
+set ttimeoutlen=100
+if maparg('<C-L>', 'n') ==# ''
+      nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+endif
+if !&scrolloff
+    set scrolloff=1
+endif
+if !&sidescrolloff
+    set sidescrolloff=5
+endif
+if &listchars ==# 'eol:$'
+      set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+endif
+if v:version > 703 || v:version == 703 && has("patch541")
+      set formatoptions+=j " Delete comment character when joining commented lines
+endif
+if has('path_extra')
+      setglobal tags-=./tags tags-=./tags; tags^=./tags;
+endif
+set sessionoptions-=options
+" Allow color schemes to do bright colors without forcing bold.
+if &t_Co == 8 && $TERM !~# '^linux\|^Eterm'
+   set t_Co=16
+endif
+
+" Load matchit.vim, but only if the user hasn't installed a newer version.
+if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
+     runtime! macros/matchit.vim
+endif
+inoremap <C-U> <C-G>u<C-U>
+set relativenumber 
+set number
+"highlight LineNr ctermfg=grey ctermbg=grey
+highlight LineNr ctermfg=DarkGray
+
 
