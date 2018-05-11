@@ -4,14 +4,14 @@
 -- this version doesn't use CTE, so works in pre-3.8.x sqlite3 --
 -- 2^21 = 2m --
 
-create temp table if not exists __tmp1 as
-  select 0 as ix union values (1), (2), (3), (4), (5), (6), (7);
+create temp table __tmp1 as
+  select 0 union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7;
 
 create temp table if not exists __tmp2 as
-  select T.* from __tmp1 T join __tmp1 join __tmp1 join __tmp1  join __tmp1  join __tmp1; 
+  select 0 from __tmp1, __tmp1, __tmp1, __tmp1, __tmp1, __tmp1;
 
 create table if not exists _int_ as
-  select rowid ix from __tmp2; 
+  select rowid ix from __tmp2;
 
 drop table if exists __tmp1;
 drop table if exists __tmp2;
